@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `uq_npc_memory_campaign_lname` ON `npc_memory` (`campaign_id`,lower(trim(name)));

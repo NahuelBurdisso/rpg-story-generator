@@ -1,0 +1,352 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 20% 97%;
+    --foreground: 220 20% 12%;
+    --card: 40 15% 94%;
+    --card-foreground: 220 20% 12%;
+    --popover: 40 15% 94%;
+    --popover-foreground: 220 20% 12%;
+    --primary: 220 20% 12%;
+    --primary-foreground: 40 20% 97%;
+    --secondary: 40 10% 89%;
+    --secondary-foreground: 220 20% 12%;
+    --muted: 40 10% 89%;
+    --muted-foreground: 220 10% 45%;
+    --accent: 40 10% 89%;
+    --accent-foreground: 220 20% 12%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 40 10% 83%;
+    --input: 40 10% 83%;
+    --ring: 38 80% 50%;
+    --radius: 0.375rem;
+
+    --genre-accent: 38 80% 50%;
+    --genre-accent-foreground: 38 80% 15%;
+    --genre-accent-muted: 38 40% 90%;
+  }
+
+  .dark {
+    --background: 222 25% 8%;
+    --foreground: 38 15% 88%;
+    --card: 222 22% 11%;
+    --card-foreground: 38 15% 88%;
+    --popover: 222 22% 11%;
+    --popover-foreground: 38 15% 88%;
+    --primary: 38 70% 55%;
+    --primary-foreground: 222 25% 8%;
+    --secondary: 222 18% 16%;
+    --secondary-foreground: 38 15% 82%;
+    --muted: 222 18% 16%;
+    --muted-foreground: 220 10% 55%;
+    --accent: 222 18% 18%;
+    --accent-foreground: 38 15% 88%;
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 222 15% 18%;
+    --input: 222 15% 18%;
+    --ring: 38 70% 55%;
+
+    --genre-accent: 38 70% 55%;
+    --genre-accent-foreground: 38 70% 90%;
+    --genre-accent-muted: 38 30% 18%;
+  }
+
+  /* Genre accent overrides */
+  .genre-fantasy {
+    --genre-accent: 38 70% 55%;
+    --genre-accent-foreground: 38 70% 90%;
+    --genre-accent-muted: 38 30% 18%;
+  }
+
+  .genre-sci-fi {
+    --genre-accent: 185 70% 48%;
+    --genre-accent-foreground: 185 70% 90%;
+    --genre-accent-muted: 185 30% 16%;
+  }
+
+  .genre-horror {
+    --genre-accent: 0 65% 50%;
+    --genre-accent-foreground: 0 65% 90%;
+    --genre-accent-muted: 0 30% 16%;
+  }
+
+  .genre-post-apocalyptic {
+    --genre-accent: 25 55% 45%;
+    --genre-accent-foreground: 25 55% 88%;
+    --genre-accent-muted: 25 25% 16%;
+  }
+
+  .genre-custom {
+    --genre-accent: 270 50% 55%;
+    --genre-accent-foreground: 270 50% 90%;
+    --genre-accent-muted: 270 25% 18%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  .prose-narrator {
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.8;
+    letter-spacing: 0.012em;
+    color: hsl(var(--foreground) / 0.92);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .prose-narrator p {
+    margin-bottom: 0.85em;
+    text-indent: 0;
+  }
+
+  .prose-narrator p + p {
+    margin-top: 0.4em;
+  }
+
+  .prose-narrator em {
+    color: hsl(var(--foreground) / 0.7);
+    font-style: italic;
+  }
+
+  .prose-narrator strong {
+    color: hsl(var(--genre-accent-foreground));
+    font-weight: 700;
+  }
+
+  .prose-narrator blockquote {
+    border-left: 2px solid hsl(var(--genre-accent));
+    padding-left: 1em;
+    font-style: italic;
+    opacity: 0.9;
+    margin: 0.75em 0;
+  }
+
+  .prose-narrator h1,
+  .prose-narrator h2,
+  .prose-narrator h3 {
+    font-weight: 700;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+  }
+
+  .prose-narrator code {
+    background: hsl(var(--muted));
+    padding: 0.15em 0.35em;
+    border-radius: 3px;
+    font-size: 0.875em;
+  }
+
+  .prose-narrator pre {
+    background: hsl(var(--muted));
+    padding: 1em;
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+
+  .prose-narrator ul,
+  .prose-narrator ol {
+    padding-left: 1.5em;
+    margin-bottom: 0.75em;
+  }
+
+  .prose-narrator li {
+    margin-bottom: 0.25em;
+  }
+
+  .genre-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: hsl(var(--genre-accent-muted));
+    color: hsl(var(--genre-accent-foreground));
+    border: 1px solid hsl(var(--genre-accent) / 0.3);
+  }
+
+  /* ── Narrative text enhancements ── */
+
+  /* Drop cap on first paragraph of narrator messages */
+  .narrative-drop-cap p:first-of-type::first-letter {
+    float: left;
+    font-size: 3.2em;
+    line-height: 0.8;
+    padding-right: 0.08em;
+    padding-top: 0.05em;
+    font-weight: 700;
+    color: hsl(var(--genre-accent-foreground));
+    font-family: Georgia, "Times New Roman", serif;
+  }
+
+  /* No drop cap inside dialogue blockquotes ("¡No!" became a giant "¡N") */
+  .narrative-drop-cap .action-blockquote p::first-letter,
+  .narrative-drop-cap p.npc-dialogue::first-letter {
+    float: none;
+    font-size: inherit;
+    line-height: inherit;
+    padding: 0;
+    font-weight: inherit;
+    color: inherit;
+    font-family: inherit;
+  }
+
+  /* NPC dialogue styling — applied via markdown renderer */
+  .npc-dialogue {
+    position: relative;
+    padding-left: 1.25em;
+    margin: 0.5em 0;
+    font-style: italic;
+    color: hsl(var(--genre-accent-foreground));
+    border-left: 2px solid hsl(var(--genre-accent) / 0.4);
+  }
+
+  .npc-dialogue::before {
+    content: "\201C";
+    position: absolute;
+    left: 0.15em;
+    top: -0.15em;
+    font-size: 1.8em;
+    color: hsl(var(--genre-accent) / 0.5);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+
+  /* Ornamental scene divider */
+  .scene-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1.25rem 0;
+    color: hsl(var(--genre-accent) / 0.4);
+  }
+
+  .scene-divider::before,
+  .scene-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      hsl(var(--genre-accent) / 0.3),
+      transparent
+    );
+  }
+
+  /* Scene headers — dramatic, uppercase, tracked */
+  .scene-header {
+    font-family: Georgia, "Times New Roman", serif;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: hsl(var(--genre-accent-foreground));
+    border-bottom: 1px solid hsl(var(--genre-accent) / 0.2);
+    padding-bottom: 0.35em;
+    margin-top: 1.25em;
+    margin-bottom: 0.75em;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  /* Action blockquote — dramatic callout */
+  .action-blockquote {
+    position: relative;
+    border-left: 3px solid hsl(var(--genre-accent) / 0.6);
+    background: hsl(var(--genre-accent-muted) / 0.3);
+    border-radius: 0 4px 4px 0;
+    padding: 0.6em 0.8em;
+    margin: 0.75em 0;
+    font-style: italic;
+  }
+}
+
+/* ── Narrative animations ── */
+@keyframes narrativeFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes narrativeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes userSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+@keyframes quillWrite {
+  0% { stroke-dashoffset: 24; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.animate-narrative-in {
+  animation: narrativeFadeIn 0.5s ease-out both;
+}
+
+.animate-narrator-slide {
+  animation: narrativeSlideIn 0.4s ease-out both;
+}
+
+.animate-user-slide {
+  animation: userSlideIn 0.3s ease-out both;
+}
+
+/* Scrollbar styling for dark mode */
+.dark ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: hsl(222 15% 25%);
+  border-radius: 3px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: hsl(222 15% 35%);
+}

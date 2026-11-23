@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      # better-sqlite3 ships prebuilt binaries for Node 22 on both platforms.
+      - run: npm ci
+
+      - run: npm run typecheck
+
+      - run: npm run lint
+
+      # Unit tests force DB_PATH=:memory: (vitest.config.mts), so no database
+      # is needed. The PLAY_LOOP e2e scripts are not collected without PLAY_LOOP=1.
+      - run: npm test
+
+      # Migrations are the source of truth. `drizzle-kit generate` needs no
+      # database: if server/db/schema.ts changed without a migration it writes a
+      # new file under ./drizzle, which fails this step. (scripts/check-schema-drift.mjs
+      # compares a *live* DB against the migrations, so it is a local tool, not a CI step.)
+      - name: Schema and migrations are in sync
+        if: matrix.os == 'ubuntu-latest'
+        shell: bash
+        run: |
+          npx drizzle-kit generate
+          if [ -n "$(git status --porcelain -- drizzle)" ]; then
+            echo "::error::server/db/schema.ts has changes without a migration; run 'npx drizzle-kit generate' and commit the result"
+            git status --porcelain -- drizzle
+            exit 1
+          fi

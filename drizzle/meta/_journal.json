@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1780415799092,
+      "tag": "0000_secret_praxagora",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1780425140050,
+      "tag": "0001_jazzy_rocket_racer",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1780455084642,
+      "tag": "0002_harsh_lord_tyger",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1780498372476,
+      "tag": "0003_aromatic_the_initiative",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1792700059967,
+      "tag": "0004_npc_unique_name",
+      "breakpoints": true
+    }
+  ]
+}

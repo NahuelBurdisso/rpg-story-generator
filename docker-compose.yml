@@ -1,0 +1,59 @@
+services:
+  comfyui:
+    image: yanwk/comfyui-boot:cu126-slim
+    container_name: rpg-comfyui
+    # Loopback only — ComfyUI has no auth; /view would expose every image to the LAN
+    ports:
+      - "127.0.0.1:8188:8188"
+    volumes:
+      - D:/ai-models/sdxl:/root/ComfyUI/models/checkpoints
+      - D:/ai-models/sdxl-vae:/root/ComfyUI/models/vae
+      - D:/ai-models/sdxl-lora:/root/ComfyUI/models/loras
+      - D:/ai-models/clip-vision:/root/ComfyUI/models/clip_vision
+      - D:/ai-models/ipadapter:/root/ComfyUI/models/ipadapter
+      - D:/ai-models/controlnet:/root/ComfyUI/models/controlnet
+      - D:/ai-models/upscale:/root/ComfyUI/models/upscale_models
+      - D:/ai-output/rpg:/root/ComfyUI/output
+      - D:/ai-input:/root/ComfyUI/input
+      - comfyui-custom-nodes:/root/ComfyUI/custom_nodes
+    shm_size: '8g'
+    restart: unless-stopped
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      # Don't embed prompt/workflow JSON in saved PNGs
+      - CLI_ARGS=--disable-metadata
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  # Ollama — only needed if not running natively
+  # Start with: docker compose --profile ollama up -d
+  ollama:
+    image: ollama/ollama:latest
+    container_name: rpg-ollama
+    profiles: ["ollama"]
+    ports:
+      - "127.0.0.1:11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    restart: unless-stopped
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - OLLAMA_KEEP_ALIVE=5m
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+volumes:
+  comfyui-custom-nodes:
+  ollama-data:
